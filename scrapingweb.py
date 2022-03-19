@@ -9,6 +9,7 @@ s = Service("E:\DATA DOKUMEN\POLBAN\semester 2\Proyek 1  Pengembangan Perangkat 
 driver = webdriver.Edge(service=s)
 driver.get("https://editorial.rottentomatoes.com/guide/best-netflix-movies-to-watch-right-now/")
 
+i = 1
 movieslist = []
 now = datetime.now()
 dt_string = now.strftime("%B %d, %Y %H:%M:%S")
@@ -17,8 +18,9 @@ for movies in driver.find_elements(By.CLASS_NAME, "row.countdown-item"):
     print(movies.text.split("\n"))
     for img in movies.find_elements(By.TAG_NAME,"img"):
         print(img.get_attribute("src"))
-
-        movieslist.append(
+        urllib.request.urlretrieve(img.get_attribute("src"), str(i)+".png")
+        i = i+1
+            movieslist.append(
             {"Ranking":movies.text.split("\n")[2].split("#",1)[1],
              "Title":movies.text.split("\n")[0].split(" (",1)[0],
              "ReleaseDate":movies.text.split("\n")[0].split(" (", 1)[1].split(")")[0],
